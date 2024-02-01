@@ -24,6 +24,8 @@ pip install -r requirements.txt
 - [Data Preparation](#data-preparation)
 - [Training ITI-GEN](#training-iti-gen)
 - [Prompt Prepending](#optional-prompt-prepending)
+- [Prompt Prepending to generate Figure 5: Multi-category distribution trained with “a headshot of a person” and modified with the prompt: "A whole body shot of a person".](#Prompt Prepending to generate Figure 5: Multi-category distribution trained with “a headshot of a person” and modified with the prompt: "A whole body shot of a person".)
+
 - [Generation](#generation)
   - [Stable Diffusion installation](#stable-diffusion-installation)
   - [Image generation](#image-generation)
@@ -42,6 +44,29 @@ cd ITI-GEN
 conda env create --name iti-gen --file=environment.yml
 source activate iti-gen
 ```
+
+Install the Stable Diffusion model to generate the Images. In our work, we used Stable-Diffusion-v-1-4.
+
+```shell
+
+# Activate your environment
+source activate iti_gen
+
+### Stable Diffusion installation
+cd models
+git clone https://github.com/CompVis/stable-diffusion.git
+# ITI-GEN has been tested with this version: https://huggingface.co/CompVis/stable-diffusion-v-1-4-original
+# Due to licence issues, we cannot share the pre-trained checkpoints directly.
+# Download it yourself and put the Stable Diffusion checkpoints at <path/to/sd-v1-4.ckpt>.
+mv stable-diffusion sd
+mkdir -p sd/models/ldm/stable-diffusion-v1/
+# ln -s <path/to/sd-v1-4.ckpt> sd/models/ldm/stable-diffusion-v1/model.ckpt
+wget "https://huggingface.co/CompVis/stable-diffusion-v-1-4-original/resolve/main/sd-v1-4.ckpt?download=true" -O sd/models/ldm/stable-diffusion-v1/models.ckpt
+
+cd sd
+pip install -e .
+cd ../..
+```
 # Data Preparation
 
 To generate the embeddings, we used the reference images of the original paper:
@@ -55,12 +80,7 @@ To generate the embeddings, we used the reference images of the original paper:
 To download the data, you can use the following code:
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
 
-# Your job starts in the directory where you call sbatch
-cd $HOME/...
 # Activate your environment
 source activate ...
 
@@ -83,15 +103,6 @@ Next, run the following code:
 
 ```shell
 
-#!/bin/bash
-
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
-
 # Activate your environment
 source activate iti_gen
 
@@ -108,12 +119,6 @@ rm data/dataset.zip
 To download the celebA dataset use the following code:
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -155,12 +160,6 @@ In the [original repository](https://github.com/humansensinglab/ITI-GEN/edit/mai
 In case you want to download the LHQ dataset, you can also employ the following code:
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -203,12 +202,6 @@ Save the `.zip` files and unzip the downloaded reference images under ```data/``
 Jobs adapted from the [original repository](https://github.com/humansensinglab/ITI-GEN#training-iti-gen):
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -307,12 +300,6 @@ python train_iti_gen.py \
 **2. Image generation to replicate the results of Figure 1**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -390,7 +377,6 @@ python generation.py \
     --skip_grid \
     --n_samples=200
 
-
 # 5. Train for Mustache attribute 
 echo "**5. Generation for Mustache attribute**"
 python generation.py \
@@ -403,7 +389,6 @@ python generation.py \
     --n_iter=5 \
     --skip_grid \
     --n_samples=200
-
 
 # 6. Train for Smiling attribute 
 echo "**6. Generation for Smiling attribute**"
@@ -422,7 +407,6 @@ echo "********************"
 echo "**Generation for combination of attributes**"
 echo "********************"
 
-
 # 7. Train for Male,Young attribute 
 echo "**7. Generation for Male,Young attribute**"
 python generation.py \
@@ -435,7 +419,6 @@ python generation.py \
     --n_iter=5 \
     --skip_grid \
     --n_samples=200
-
 
 # 8. Train for Male,Young,Eyeglasses attribute 
 echo "**8. Generation for Male,Young,Eyeglasses attribute**"
@@ -467,12 +450,6 @@ python generation.py \
 **3. Evaluation**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -503,7 +480,6 @@ python evaluation.py \
     --device 0
 rm "$outdir"/*.png
 
-
 outdir='ckpts/a_headshot_of_a_person_Young/original_prompt_embedding/sample_results'
 directories=("$outdir"/*)
 for directory in "${directories[@]}"; do
@@ -528,7 +504,6 @@ python evaluation.py \
     --device 0
 rm "$outdir"/*.png
 
-
 outdir='ckpts/a_headshot_of_a_person_Pale_Skin/original_prompt_embedding/sample_results'
 directories=("$outdir"/*)
 for directory in "${directories[@]}"; do
@@ -546,7 +521,6 @@ for directory in "${directories[@]}"; do
     fi
 done
 rm "$outdir"/*.png
-
 
 echo 'pale skin'
 python evaluation.py \
@@ -615,7 +589,6 @@ python evaluation.py \
     --device 0
 
 rm "$outdir"/*.png
-
 
 outdir='ckpts/a_headshot_of_a_person_Smiling/original_prompt_embedding/sample_results'
 directories=("$outdir"/*)
@@ -689,7 +662,6 @@ python evaluation.py \
     --device 0
 rm "$outdir"/*.png
 
-
 outdir='ckpts/a_headshot_of_a_person_Male_Young_Eyeglasses_Smiling/original_prompt_embedding/sample_results'
 directories=("$outdir"/*)
 for directory in "${directories[@]}"; do
@@ -762,13 +734,6 @@ Code to generate the Figure 1(a). Perceived Gender × Age
 
 ```shell
 
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
-
 # Activate your environment
 source activate iti_gen
 echo "**1. Generation Figure 6a**"
@@ -785,12 +750,6 @@ python generation.py \
 Code to generate the Figure 1(b). Perceived Gender × Skin Tone
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -817,12 +776,6 @@ Code to evaluate the generated images of Perceived Gender x Age & Perceived Gend
 
 --Perceived Gender x Age--
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -855,12 +808,6 @@ rm "$outdir"/*.png
 
 --Perceived Gender x Skin Tone--
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -896,12 +843,6 @@ rm "$outdir"/*.png
 **1. Training ITI-GEN on the human domain to generate the embedding to replicate the results of Figure 2: Ablation on the quantity of reference images**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -937,12 +878,6 @@ done
 **2. Generation of the images for Figure 2**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -969,12 +904,6 @@ done
 **3. Evaluation**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1018,12 +947,6 @@ done
 
 **1. Prepend to generate images of nurses and plumbers**
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1053,12 +976,6 @@ python prepend.py \
 
 **2. Evaluation of Nurse images**
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1091,12 +1008,6 @@ rm "$outdir"/*.png
 
 **3. Evaluation of Plumber images**
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1131,12 +1042,6 @@ rm "$outdir"/*.png
 **1. Prepend to generate images of the whole body of a person with attributes Age and Male**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1156,12 +1061,6 @@ python prepend.py \
 **2. Prepend to generate images of the whole body of a person with attributes of Skin tone and Male**
 
 ```shell
-module purge
-module load 2022
-module load Anaconda3/2022.05
-
-# Your job starts in the directory where you call sbatch
-cd $HOME/FACT
 
 # Activate your environment
 source activate iti_gen
@@ -1207,38 +1106,3 @@ python3 evaluation.py \
     --device 0
 rm "$outdir"/*.png
 ```
-
-## Evaluation
-
-To evaluate my model on ImageNet, run:
-
-```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
-```
-
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
-
-## Pre-trained Models
-
-You can download pretrained models here:
-
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
-
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
-
-## Results
-
-Our model achieves the following performance on :
-
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
-
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
-
-## Contributing
-
->📋  Pick a licence and describe how to contribute to your code repository. 
