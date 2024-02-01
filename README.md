@@ -12,6 +12,7 @@
     <img src="docs/teaser.png" width="600px"/>
 </p>
 
+Please, if you use this repository cite:
 > **ITI-GEN: Inclusive Text-to-Image Generation**<br>
 > [Cheng Zhang](https://czhang0528.github.io/), 
 [Xuanbai Chen](https://xuanbai-chen.github.io/), 
@@ -20,7 +21,6 @@
 [Dmitry Lagun](https://www.linkedin.com/in/dmitry-lagun-738b1221/), 
 [Thabo Beeler](https://thabobeeler.com/), 
 [Fernando De la Torre](https://www.cs.cmu.edu/~ftorre/) <br>
-> **ICCV 2023 Oral, Best Paper Finalist**
 
 This repo contains the code for training ITI-GEN and generating images that uniformly span across 
 the categories of selected attributes. The main idea behind our approach is leveraging reference images to better represent diverse attributes. 
