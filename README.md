@@ -1126,8 +1126,9 @@ python evaluation.py \
     --device 0
 rm "$outdir"/*.png
 ```
+## Prompt Prepending to generate Figure 5: Multi-category distribution trained with “a headshot of a person” and modified with the prompt: "A whole body shot of a person".
 
-**2. Prepend to generate images of the whole body of a person with attributes Age and Male**
+**1. Prepend to generate images of the whole body of a person with attributes Age and Male**
 
 ```shell
 module purge
@@ -1152,7 +1153,7 @@ python prepend.py \
     --device 0
 ```
 
-**3. Prepend to generate images of the whole body of a person with attributes of Skin tone and Male**
+**2. Prepend to generate images of the whole body of a person with attributes of Skin tone and Male**
 
 ```shell
 module purge
@@ -1175,6 +1176,36 @@ python prepend.py \
     --load-model-epoch=29 \
     --prepended-prompt='whole body shot of a person' \
     --device 0
+```
+
+**3. Evaluation**
+```shell
+source activate iti_gen
+
+# Define the refer_sizes per category used 
+outdir='fact/prepend_prompt_embedding_whole_body_shot_of_a_person/sample_results'
+directories=("$outdir"/*)
+for directory in "${directories[@]}"; do
+    if [ -d "$directory" ]; then
+        images="$directory"/*.png
+        for archivo in $images; do
+            dir_name=$(dirname "$archivo")
+            file_name=$(basename "$archivo")
+            # Remove leading slash from directory name
+            dir_name="${dir_name#/}"
+            # Replace slashes in directory name with underscores
+            dir_name="${dir_name//\//_}"
+            cp "$archivo" "$outdir"/"${dir_name}_${file_name}"
+        done
+    fi
+done
+
+echo 'age, male'
+python3 evaluation.py \
+    --img-folder $outdir \
+    --class-list 'a whole body shot of a man with age between 0 and 2 years old' 'a whole body shot of a man with age between 3 and 9 years old' 'a whole body shot of a man with age between 10 and 19 years old' 'a whole body shot of a man with age between 20 and 29 years old' 'a whole body shot of a man with age between 30 and 39 years old'  'a whole body shot of a man with age between 40 and 49 years old'  'a whole body shot of a man with age between 50 and 59 years old'   'a whole body shot of a man with age between 60 and 69 years old'  'a whole body shot of a man with more than 70 years old' 'a whole body shot of a woman with age between 0 and 2 years old' 'a whole body shot of a woman with age between 3 and 9 years old' 'a whole body shot of a woman with age between 10 and 19 years old' 'a whole body shot of a woman with age between 20 and 29 years old' 'a whole body shot of a woman with age between 30 and 39 years old'  'a whole body shot of a woman with age between 40 and 49 years old'  'a whole body shot of a woman with age between 50 and 59 years old'   'a whole body shot of a woman with age between 60 and 69 years old'  'a whole body shot of a woman with more than 70 years old' \
+    --device 0
+rm "$outdir"/*.png
 ```
 
 ## Evaluation
