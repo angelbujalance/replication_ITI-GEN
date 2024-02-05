@@ -18,20 +18,20 @@ pip install -r requirements.txt
 
 >📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
 
-## outline
+<> ## outline
 
-- [Installation](#installation)
-- [Data Preparation](#data-preparation)
-- [Training ITI-GEN](#training-iti-gen)
-- [Prompt Prepending](#optional-prompt-prepending)
-- [Prompt Prepending to generate Figure 5: Multi-category distribution trained with “a headshot of a person” and modified with the prompt: "A whole body shot of a person".](#Code-to-replicate-the-results-of-Table-2.)
-- [Generation](#generation)
-  - [Stable Diffusion installation](#stable-diffusion-installation)
-  - [Image generation](#image-generation)
-- [Evaluation](#evaluation)
-- [Acknowledgements](#acknowledgements)
-- [Citation](#citation)
-- [License](#license)
+<> - [Installation](#installation)
+<> - [Data Preparation](#data-preparation)
+<> - [Training ITI-GEN](#training-iti-gen)
+<> - [Prompt Prepending](#optional-prompt-prepending)
+<> - [Prompt Prepending to generate Figure 5: Multi-category distribution trained with “a headshot of a person” and modified with the prompt: "A whole body shot of a person".](#Code-to-replicate-the-results-of-Table-2.)
+<> - [Generation](#generation)
+<>   - [Stable Diffusion installation](#stable-diffusion-installation)
+<>   - [Image generation](#image-generation)
+<> - [Evaluation](#evaluation)
+<> - [Acknowledgements](#acknowledgements)
+<> - [Citation](#citation)
+<> - [License](#license)
 
 ## Installation
 
