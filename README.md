@@ -148,6 +148,8 @@ rm data/dataset.zip
 
 In the [original repository](https://github.com/humansensinglab/ITI-GEN/edit/main/README.md), they tried to generate inclusive images of nature scenes. In our study, we focused on the human face generation. You can find the dataset for training inclusive images of nature scenes at the following link.
 
+|   Dataset    |      Description      |       Attribute Used        |                                        Google Drive                                        |
+|:------------:|:---------------------:|:---------------------------:|:------------------------------------------------------------------------------------------:|
 |   [LHQ](https://universome.github.io/alis)    |    Natural scenes     | 11 global scene attributes  | [Link](https://drive.google.com/file/d/1_ypk4ouxQptBevUTcWSp0ZbxvqSZGiKg/view?usp=sharing) |
 
 In case you want to download the LHQ dataset, you can also employ the following code:
@@ -189,10 +191,6 @@ We provide the code to reproduce our main experiments:
 
 ## Code to replicate the results of Table 2.
 
-
-<p align="center">
-    <img src="docs/loss.png" width="400px"/>
-</p>
 
 **1. Training ITI-GEN on the human domain to generate the embedding to replicate the results of Table 2**
 Jobs adapted from the [original repository](https://github.com/humansensinglab/ITI-GEN#training-iti-gen):
@@ -936,10 +934,6 @@ done
 ```
 
 ## Prompt Prepending to generate Figure 3: Perceived gender and age distribution for gender-stereotypical professions
-
-<p align="center">
-    <img src="docs/fig_framework.png"/>
-</p>
 
 **1. Prepend to generate images of nurses and plumbers**
 ```shell
