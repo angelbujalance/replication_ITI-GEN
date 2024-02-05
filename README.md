@@ -20,12 +20,12 @@ pip install -r requirements.txt
 
 ## outline
 
-<> - [Installation](#installation)
-<> - [Data Preparation](#data-preparation)
-<> - [Reproducibility](#reproducibility)
-<> - [Acknowledgements](#acknowledgements)
-<> - [Citation](#citation)
-<> - [License](#license)
+ - [Installation](#installation)
+ - [Data Preparation](#data-preparation)
+ - [Reproducibility](#reproducibility)
+ - [Acknowledgements](#acknowledgements)
+ - [Citation](#citation)
+ - [License](#license)
 
 ## Installation
 
